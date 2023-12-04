@@ -8,10 +8,10 @@ namespace _Workspace.CodeBase.GamePlay.Logic.Player
         [SerializeField] private float _rotationSpeed;
 
         private void Awake()
-            => _mover.OnMoved += RotateToMovementDirection;
+            => _mover.OnMove += RotateToMovementDirection;
 
         private void OnDestroy()
-            => _mover.OnMoved -= RotateToMovementDirection;
+            => _mover.OnMove -= RotateToMovementDirection;
 
         private void RotateToMovementDirection(Vector3 direction)
         {

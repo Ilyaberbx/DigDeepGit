@@ -46,6 +46,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - GamePlayState
+  - m_GUID: fc162be5dbe22f84fa5dda164a22f9ec
+    m_Address: Gem
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GamePlayState
+  - m_GUID: fc7c433443c0e5d4e884f6f932321c76
+    m_Address: Dirt
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GamePlayState
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 032c7a5e9ac68534d9c5c3a578139d75, type: 2}
   m_SchemaSet:

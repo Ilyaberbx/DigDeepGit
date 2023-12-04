@@ -1,5 +1,6 @@
 ﻿using _Workspace.CodeBase.GamePlay.Factory;
 using _Workspace.CodeBase.GamePlay.Input;
+using _Workspace.CodeBase.GamePlay.Logic.DirtSystem;
 using _Workspace.CodeBase.GamePlay.StateMachine;
 using _Workspace.CodeBase.Service.Factory;
 using _Workspace.CodeBase.UI.Factory;
@@ -11,6 +12,7 @@ namespace _Workspace.CodeBase.GamePlay
     public class GameplayInstaller : MonoInstaller
     {
         [SerializeField] private GameplayBootstrapper _bootstrapper;
+
         public override void InstallBindings()
         {
             BindInputService();
@@ -18,27 +20,32 @@ namespace _Workspace.CodeBase.GamePlay
             BindStateMachine();
             BindUIFactory();
             BindPlayerFactory();
+            BindDirtSystem();
             BindBootstrapper();
         }
 
-        private void BindPlayerFactory() 
+        private void BindDirtSystem()
+            => Container.Bind<DirtSystem>()
+                .AsSingle();
+
+        private void BindPlayerFactory()
             => Container.Bind<PlayerFactory>()
                 .AsSingle();
 
-        private void BindUIFactory() 
+        private void BindUIFactory()
             => Container.BindInterfacesTo<UIFactory>()
                 .AsSingle();
 
-        private void BindInputService() 
+        private void BindInputService()
             => Container.BindInterfacesAndSelfTo<InputServiceProxy>()
                 .AsSingle();
 
 
-        private void BindStateMachine() 
+        private void BindStateMachine()
             => Container.Bind<GameplayStateMachine>()
                 .AsSingle();
 
-        private void BindPrefabFactory() 
+        private void BindPrefabFactory()
             => Container.BindInterfacesTo<PrefabFactoryAsync>()
                 .AsSingle();
 

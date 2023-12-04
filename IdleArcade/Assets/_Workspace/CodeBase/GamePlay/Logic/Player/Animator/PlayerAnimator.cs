@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace _Workspace.CodeBase.GamePlay.Logic.Player.Animator
 {
@@ -10,21 +9,21 @@ namespace _Workspace.CodeBase.GamePlay.Logic.Player.Animator
 
         [SerializeField] private UnityEngine.Animator _animator;
         [SerializeField] private PlayerMover _mover;
-
-
-        private void Awake() 
-            => _mover.OnMoved += PlayMove;
-
-        private void OnDestroy() 
-            => _mover.OnMoved -= PlayMove;
-
-        private void Update()
+        [SerializeField] private PlayerDigger _digger;
+        
+        private void Awake()
         {
-            if(UnityEngine.Input.GetKeyDown(KeyCode.K))
-                PlayMine();
+            _mover.OnMove += PlayMove;
+            _digger.OnDig += PlayDig;
         }
 
-        private void PlayMine() 
+        private void OnDestroy()
+        {
+            _mover.OnMove -= PlayMove;
+            _digger.OnDig -= PlayDig;
+        }
+
+        private void PlayDig() 
             => _animator.SetTrigger(MineKey);
 
         private void PlayMove(Vector3 movement) 

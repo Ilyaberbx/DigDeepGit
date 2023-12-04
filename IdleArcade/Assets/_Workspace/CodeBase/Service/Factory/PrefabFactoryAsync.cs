@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using _Workspace.CodeBase.Infrastructure.Service.Assets;
+﻿using _Workspace.CodeBase.Infrastructure.Service.Assets;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Zenject;
@@ -27,11 +26,11 @@ namespace _Workspace.CodeBase.Service.Factory
         public async UniTask<T> Create<T>(string address, Vector3 at, Transform container) where T : Object
         {
             GameObject prefab = await _assets.Load<GameObject>(address);
-            GameObject createdObject = _instantiator.InstantiatePrefab(prefab, at, container);
+            GameObject createdObject = _instantiator.InstantiatePrefab(prefab, at, Quaternion.identity, container);
             return createdObject.GetComponent<T>();
         }
 
-        public async Task<T> Create<T>(string address, Transform container) where T : Object
+        public async UniTask<T> Create<T>(string address, Transform container) where T : Object
         {
             GameObject prefab = await _assets.Load<GameObject>(address);
             GameObject createdObject = _instantiator.InstantiatePrefab(prefab, Vector3.zero, container);

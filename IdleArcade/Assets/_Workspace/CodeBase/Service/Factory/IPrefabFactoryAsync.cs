@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Cysharp.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace _Workspace.CodeBase.Service.Factory
@@ -8,6 +7,6 @@ namespace _Workspace.CodeBase.Service.Factory
     {
         UniTask<T> Create<T>(string address) where T : Object;
         UniTask<T> Create<T>(string address, Vector3 at, Transform container) where T : Object;
-        Task<T> Create<T>(string address, Transform container) where T : Object;
+        UniTask<T> Create<T>(string address, Transform container) where T : Object;
     }
 }

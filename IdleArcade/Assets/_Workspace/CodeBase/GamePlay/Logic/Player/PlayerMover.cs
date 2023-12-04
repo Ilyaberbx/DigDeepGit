@@ -7,7 +7,7 @@ namespace _Workspace.CodeBase.GamePlay.Logic.Player
 {
     public class PlayerMover : MonoBehaviour
     {
-        public event Action<Vector3> OnMoved;
+        public event Action<Vector3> OnMove;
         [SerializeField] private CharacterController _characterController;
         [SerializeField] private float _speed;
 
@@ -29,7 +29,7 @@ namespace _Workspace.CodeBase.GamePlay.Logic.Player
 
             _characterController.Move(movement * (_speed * Time.deltaTime));
             
-            OnMoved?.Invoke(direction);
+            OnMove?.Invoke(direction);
         }
         
 
