@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: GamePlay
+  m_EditorClassIdentifier: 
+  m_GroupName: GamePlay
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 72c4872711e6a3b4691529ca212beceb
+  m_SerializeEntries:
+  - m_GUID: 889a3106868e405489fa6a71ad791c68
+    m_Address: GamePlayScene
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 58c34f76cb52f394bb1b533bb0138ded
+    m_Address: StandardSurfaceOutlined
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GamePlayState
+  - m_GUID: c4e93bb4f72e767498cccaa58180ef17
+    m_Address: Mat
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GamePlayState
+  - m_GUID: d0a7672c31a11924da07884378ef30b3
+    m_Address: stickman
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GamePlayState
+  - m_GUID: 11d9dade02e2bdf4c989933e9f221762
+    m_Address: Stickman
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GamePlayState
+  - m_GUID: b9f1b91363da5de44b9e523338efa347
+    m_Address: Floating Joystick
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GamePlayState
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 032c7a5e9ac68534d9c5c3a578139d75, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 3e991ee9c8454ae42a3b2a0545c38730, type: 2}
+    - {fileID: 11400000, guid: 64c0ac4eb4056b84a98cd07a11688a35, type: 2}
