@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using _Workspace.CodeBase.GamePlay.Assets;
 using _Workspace.CodeBase.GamePlay.Factory;
 using _Workspace.CodeBase.GamePlay.Input;
 using _Workspace.CodeBase.Infrastructure.Service.EventBus.Handlers;
 using _Workspace.CodeBase.Infrastructure.Service.StateMachine.State;
 using _Workspace.CodeBase.Service.EventBus;
-using _Workspace.CodeBase.Service.Factory;
 using _Workspace.CodeBase.UI.Factory;
 using _Workspace.CodeBase.UI.LoadingCurtain;
 using Cysharp.Threading.Tasks;
