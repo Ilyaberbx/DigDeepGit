@@ -12,7 +12,7 @@ namespace _Workspace.CodeBase.GamePlay.Factory
         public PlayerFactory(IPrefabFactoryAsync prefabFactory) 
             => _prefabFactory = prefabFactory;
 
-        public async Task<GameObject> CreatePlayer(Vector3 at) 
-            => await _prefabFactory.Create<GameObject>(GamePlayAssetsAddress.Player,at,null);
+        public async Task<Transform> CreatePlayer(Vector3 at) 
+            => await _prefabFactory.Create<Transform>(GamePlayAssetsAddress.Player,at,null);
     }
 }

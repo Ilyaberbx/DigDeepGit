@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using _Workspace.CodeBase.GamePlay.Factory;
 using _Workspace.CodeBase.GamePlay.Input;
+using _Workspace.CodeBase.GamePlay.Logic.Camera;
 using _Workspace.CodeBase.GamePlay.Logic.DirtSystem;
 using _Workspace.CodeBase.Infrastructure.Service.EventBus.Handlers;
 using _Workspace.CodeBase.Infrastructure.Service.StateMachine.State;
@@ -22,6 +23,7 @@ namespace _Workspace.CodeBase.GamePlay.StateMachine.State
         private readonly PlayerFactory _playerFactory;
         private readonly InputServiceProxy _inputProxy;
         private readonly DirtSystem _dirtSystem;
+        private readonly CameraFollow _follow;
         private readonly GameplayStateMachine _gameplayStateMachine;
 
         public GameplayBootstrapState(IEventBusService eventBus
@@ -31,6 +33,7 @@ namespace _Workspace.CodeBase.GamePlay.StateMachine.State
             , PlayerFactory playerFactory
             , InputServiceProxy inputProxy
             , DirtSystem dirtSystem
+            , CameraFollow follow
             , GameplayStateMachine gameplayStateMachine)
         {
             _eventBus = eventBus;
@@ -40,6 +43,7 @@ namespace _Workspace.CodeBase.GamePlay.StateMachine.State
             _playerFactory = playerFactory;
             _inputProxy = inputProxy;
             _dirtSystem = dirtSystem;
+            _follow = follow;
             _gameplayStateMachine = gameplayStateMachine;
         }
 
@@ -53,13 +57,18 @@ namespace _Workspace.CodeBase.GamePlay.StateMachine.State
             await InitializeInputService();
 
             await InitializeDirtSystem();
+
+            Transform player = await _playerFactory.CreatePlayer(Vector3.zero);
             
-            await _playerFactory.CreatePlayer(Vector3.zero);
+            InitializeCamera(player);
 
             _curtain.Hide().Forget();
         }
 
-        private async UniTask InitializeDirtSystem() 
+        private void InitializeCamera(Transform player) 
+            => _follow.SetTarget(player);
+
+        private async UniTask InitializeDirtSystem()
             => await _dirtSystem.Initialize();
 
         private async UniTask InitializeInputService()

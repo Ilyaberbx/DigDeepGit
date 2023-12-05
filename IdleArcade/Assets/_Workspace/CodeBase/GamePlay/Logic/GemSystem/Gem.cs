@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using DG.Tweening;
+using UnityEngine;
 
 namespace _Workspace.CodeBase.GamePlay.Logic.GemSystem
 {
@@ -19,7 +20,13 @@ namespace _Workspace.CodeBase.GamePlay.Logic.GemSystem
         {
             _collider.enabled = true;
             _rigidbody.isKinematic = false;
-            _renderer.material.color = _unlockedColor;
+            ChangeGemColor();
+        }
+
+        private void ChangeGemColor()
+        {
+            _renderer.material.color = Color.white;
+            _renderer.material.DOColor(_unlockedColor, 0.5f);
         }
 
         public void Store()
