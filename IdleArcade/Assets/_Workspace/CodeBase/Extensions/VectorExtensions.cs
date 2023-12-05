@@ -13,6 +13,30 @@ namespace _Workspace.CodeBase.Extensions
         public static Vector3 AddX(this Vector3 vector, float value)
             => new(vector.x + value, vector.y, vector.z);
 
+        public static Vector3 AddX(this Vector3 vector, float value, bool when)
+        {
+            if (!when)
+                return vector;
+            
+            return new(vector.x + value, vector.y, vector.z);
+        }
+
+        public static Vector3 AddY(this Vector3 vector, float value, bool when)
+        {
+            if (!when)
+                return vector;
+            
+            return new(vector.x, vector.y + value, vector.z);
+        }
+        
+        public static Vector3 AddZ(this Vector3 vector, float value, bool when)
+        {
+            if (!when)
+                return vector;
+            
+            return new(vector.x, vector.y, vector.z + value);
+        }
+        
         public static Vector3 WithX(this Vector3 vector, float value)
             => new(value, vector.y, vector.z);
 

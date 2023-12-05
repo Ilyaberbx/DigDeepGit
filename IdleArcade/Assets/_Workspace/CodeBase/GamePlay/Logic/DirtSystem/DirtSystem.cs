@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using _Workspace.CodeBase.GamePlay.Logic.GemSystem;
 using _Workspace.CodeBase.Service.Factory;
 using Cysharp.Threading.Tasks;
 
@@ -11,59 +13,68 @@ namespace _Workspace.CodeBase.GamePlay.Logic.DirtSystem
         private const int LayerSizeY = 4;
 
         private readonly IPrefabFactoryAsync _prefabFactory;
+        private readonly IGemsProvider _gemsProvider;
         private readonly Queue<DirtLayer> _layersQueue = new();
+        private DirtLayer _currentLayer;
         private int _depth = 1;
 
-        public DirtSystem(IPrefabFactoryAsync prefabFactory)
-            => _prefabFactory = prefabFactory;
+        public DirtSystem(IPrefabFactoryAsync prefabFactory, IGemsProvider gemsProvider)
+        {
+            _prefabFactory = prefabFactory;
+            _gemsProvider = gemsProvider;
+        }
 
         public async UniTask Initialize()
         {
-            for (int i = 0; i < LayersCountConst; i++)
-                _layersQueue.Enqueue(new DirtLayer(_prefabFactory));
-
-            List<UniTask> tasks = new List<UniTask>();
-
-            InitializeLayers(tasks);
-
-            await UniTask.WhenAll(tasks);
-
+            CreateLayers();
+            await InitializeLayers();
             UnlockLayer();
         }
 
-        private void InitializeLayers(List<UniTask> tasks)
+        private void CreateLayers()
         {
+            for (int i = 0; i < LayersCountConst; i++)
+                _layersQueue.Enqueue(new DirtLayer(_prefabFactory, _gemsProvider));
+        }
+
+        private async UniTask InitializeLayers()
+        {
+            List<UniTask> tasks = new List<UniTask>();
+            
             foreach (DirtLayer layer in _layersQueue)
             {
                 _depth++;
                 layer.OnDig += HandleLayerDig;
                 tasks.Add(layer.Initialize(LayerSizeX, LayerSizeY, _depth));
             }
+            await UniTask.WhenAll(tasks);
         }
 
-        private void HandleLayerDig() 
-            => MoveNext();
+        private void HandleLayerDig()
+            => MoveNext().Forget();
 
-        private void MoveNext()
+        private async UniTask MoveNext()
         {
             _depth++;
             MoveDigLayerToEnd();
-            UnlockLayer();
+            await UnlockLayer();
         }
 
-        private void UnlockLayer()
+        private async UniTask UnlockLayer()
         {
+            _currentLayer = _layersQueue.Dequeue();
             DirtLayer nextLayer = _layersQueue.Peek();
-            nextLayer.Unlock();
+            
+            await _currentLayer.AppearGems(_depth);
+            await nextLayer.AppearGems(_depth);
+            
+            _currentLayer.Unlock();
         }
 
         private void MoveDigLayerToEnd()
         {
-            DirtLayer digLayer = _layersQueue.Dequeue();
-            
-            digLayer.Update(_depth).Forget();
-            
-            _layersQueue.Enqueue(digLayer);
+            _currentLayer.Update(_depth);
+            _layersQueue.Enqueue(_currentLayer);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using _Workspace.CodeBase.GamePlay.Factory;
 using _Workspace.CodeBase.GamePlay.Input;
 using _Workspace.CodeBase.GamePlay.Logic.DirtSystem;
+using _Workspace.CodeBase.GamePlay.Logic.GemSystem;
 using _Workspace.CodeBase.GamePlay.StateMachine;
 using _Workspace.CodeBase.Service.Factory;
 using _Workspace.CodeBase.UI.Factory;
@@ -21,8 +22,13 @@ namespace _Workspace.CodeBase.GamePlay
             BindUIFactory();
             BindPlayerFactory();
             BindDirtSystem();
+            BindGemsProvider();
             BindBootstrapper();
         }
+
+        private void BindGemsProvider() 
+            => Container.BindInterfacesTo<GemsProvider>()
+                .AsSingle();
 
         private void BindDirtSystem()
             => Container.Bind<DirtSystem>()
