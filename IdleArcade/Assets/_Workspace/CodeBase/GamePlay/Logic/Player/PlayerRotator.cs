@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using _Workspace.CodeBase.GamePlay.Logic.Player.Movement;
+using UnityEngine;
 
 namespace _Workspace.CodeBase.GamePlay.Logic.Player
 {

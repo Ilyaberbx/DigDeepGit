@@ -2,7 +2,6 @@
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace _Workspace.CodeBase.GamePlay.Logic.DirtSystem
 {
@@ -16,7 +15,7 @@ namespace _Workspace.CodeBase.GamePlay.Logic.DirtSystem
 
         private Transform _cachedTransform;
 
-        public void Start()
+        public void Initialize()
             => CacheStartValues();
 
         public async UniTask Dig()
@@ -26,7 +25,7 @@ namespace _Workspace.CodeBase.GamePlay.Logic.DirtSystem
             tasks.Add(_cachedTransform.DOLocalRotate(Vector3.one * Random.Range(-360, 360), _digDuration, RotateMode.FastBeyond360)
                 .ToUniTask());
 
-            tasks.Add(_cachedTransform.DOLocalMoveY(transform.position.y + 3f, _digDuration)
+            tasks.Add(_cachedTransform.DOLocalMoveY(transform.position.y + 5f, _digDuration)
                 .ToUniTask());
 
             tasks.Add(_cachedTransform.DOScale(Vector3.zero, _digDuration)

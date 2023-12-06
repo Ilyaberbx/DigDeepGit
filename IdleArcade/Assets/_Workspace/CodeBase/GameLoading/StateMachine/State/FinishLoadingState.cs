@@ -13,11 +13,11 @@ namespace _Workspace.CodeBase.GameLoading.StateMachine.State
         public FinishLoadingState(GameStateMachine gameStateMachine) 
             => _gameStateMachine = gameStateMachine;
 
-        public async UniTask Enter()
+        public UniTask Enter()
         {
             Debug.Log("Finish loading");
-            
             _gameStateMachine.Enter<GamePlayState>().Forget();
+            return default;
         }
 
         public UniTask Exit() 

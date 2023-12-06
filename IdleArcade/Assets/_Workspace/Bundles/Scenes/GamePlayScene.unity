@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028483, g: 0.22571601, b: 0.30692384, a: 1}
+  m_IndirectSpecularColor: {r: 0.17757836, g: 0.22232237, b: 0.30451798, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -205,6 +205,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bootstrapper: {fileID: 1942767441}
+  _dirtConfig: {fileID: 11400000, guid: e86d0aae6f8a39a4ca5e974c6d2d49c7, type: 2}
+  _ladderSystem: {fileID: 1629275120}
 --- !u!114 &98816086
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,7 +261,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 0.7169812, g: 0.57004225, b: 0.070345305, a: 1}
-  m_Intensity: 1
+  m_Intensity: 0.2
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -316,14 +318,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 634944684}
-  m_LocalRotation: {x: -0.19120708, y: -0.8082431, z: 0.3768899, w: -0.41004497}
-  m_LocalPosition: {x: 26.597536, y: 119.80615, z: 242.55171}
+  m_LocalRotation: {x: 0.85861653, y: 0.06526307, z: -0.11303897, w: 0.49572238}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 50, y: -233.8, z: 0}
+  m_LocalEulerAnglesHint: {x: 120, y: 15, z: 0}
 --- !u!1 &759354201
 GameObject:
   m_ObjectHideFlags: 0
@@ -525,6 +527,66 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _smoothing: 0.2
   _viewOffSet: {x: 0, y: 9, z: -8}
+--- !u!1 &1629275118
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1629275121}
+  - component: {fileID: 1629275120}
+  - component: {fileID: 1629275119}
+  m_Layer: 9
+  m_Name: LadderSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!65 &1629275119
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1629275118}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.2, y: 0, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0.05}
+--- !u!114 &1629275120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1629275118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ba1f4897d1144a9a037183afb31f24b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _wholeLadderCollider: {fileID: 1629275119}
+  _ladderHeightCoefficient: 1
+--- !u!4 &1629275121
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1629275118}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2, y: 1, z: 9}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1942767439
 GameObject:
   m_ObjectHideFlags: 0

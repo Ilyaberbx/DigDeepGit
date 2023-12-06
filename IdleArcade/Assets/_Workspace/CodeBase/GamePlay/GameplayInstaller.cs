@@ -1,7 +1,9 @@
 ﻿using _Workspace.CodeBase.GamePlay.Factory;
 using _Workspace.CodeBase.GamePlay.Input;
 using _Workspace.CodeBase.GamePlay.Logic.DirtSystem;
+using _Workspace.CodeBase.GamePlay.Logic.DirtSystem.StaticData;
 using _Workspace.CodeBase.GamePlay.Logic.GemSystem;
+using _Workspace.CodeBase.GamePlay.Logic.LadderSystem;
 using _Workspace.CodeBase.GamePlay.StateMachine;
 using _Workspace.CodeBase.Service.Factory;
 using _Workspace.CodeBase.UI.Factory;
@@ -13,6 +15,8 @@ namespace _Workspace.CodeBase.GamePlay
     public class GameplayInstaller : MonoInstaller
     {
         [SerializeField] private GameplayBootstrapper _bootstrapper;
+        [SerializeField] private DirtConfig _dirtConfig;
+        [SerializeField] private LadderSystem _ladderSystem;
 
         public override void InstallBindings()
         {
@@ -23,8 +27,14 @@ namespace _Workspace.CodeBase.GamePlay
             BindPlayerFactory();
             BindDirtSystem();
             BindGemsProvider();
+            BindLadderSystem();
             BindBootstrapper();
         }
+
+        private void BindLadderSystem() =>
+            Container.BindInterfacesAndSelfTo<LadderSystem>()
+                .FromInstance(_ladderSystem)
+                .AsSingle();
 
         private void BindGemsProvider() 
             => Container.BindInterfacesTo<GemsProvider>()
@@ -32,7 +42,8 @@ namespace _Workspace.CodeBase.GamePlay
 
         private void BindDirtSystem()
             => Container.Bind<DirtSystem>()
-                .AsSingle();
+                .AsSingle()
+                .WithArguments(_dirtConfig);
 
         private void BindPlayerFactory()
             => Container.Bind<PlayerFactory>()

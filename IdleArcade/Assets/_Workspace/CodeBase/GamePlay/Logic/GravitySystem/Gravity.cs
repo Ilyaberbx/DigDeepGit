@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using _Workspace.CodeBase.GamePlay.Logic.Gravity;
+using UnityEngine;
 
-namespace _Workspace.CodeBase.GamePlay.Logic.Gravity
+namespace _Workspace.CodeBase.GamePlay.Logic.GravitySystem
 {
     public class Gravity : MonoBehaviour
     {

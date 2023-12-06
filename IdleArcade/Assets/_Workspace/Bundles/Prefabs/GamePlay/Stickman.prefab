@@ -848,10 +848,10 @@ CharacterController:
   serializedVersion: 2
   m_Height: 97.6
   m_Radius: 18.2
-  m_SlopeLimit: 45
+  m_SlopeLimit: 180
   m_StepOffset: 0.04
   m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
+  m_MinMoveDistance: 0
   m_Center: {x: 0, y: 47.1, z: 0}
 --- !u!114 &-4511649713657092469
 MonoBehaviour:
@@ -866,7 +866,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterController: {fileID: 1872570284429274177}
-  _speed: 4
+  _moveSpeed: 4
+  _climbSpeed: 8
 --- !u!114 &4437359690551845511
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1701,8 +1702,9 @@ GameObject:
   - component: {fileID: 6971138687541088770}
   - component: {fileID: 383745961839078876}
   - component: {fileID: 6406470455477964146}
+  - component: {fileID: 8827445974016743438}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: GemsCounter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1756,9 +1758,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'MC Ponos
-
-'
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1827,6 +1827,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &8827445974016743438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5897844088954492435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3718a4e1f96444a6b8173303915ffa94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _text: {fileID: 6406470455477964146}
 --- !u!1 &6042626481923279105
 GameObject:
   m_ObjectHideFlags: 0

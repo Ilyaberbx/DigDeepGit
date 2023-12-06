@@ -5,5 +5,7 @@
         public const string Player = "Stickman";
         public const string Gem = "Gem";
         public const string Dirt = "Dirt";
+        public const string Ladder = "Ladder";
+        public const string DepthObstacle = "DepthObstacle";
     }
 }

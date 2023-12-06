@@ -9,7 +9,8 @@ namespace _Workspace.CodeBase.GamePlay.Logic.Player
         public event Action OnDig;
         private void OnTriggerEnter(Collider other)
         {
-            if (!other.TryGetComponent(out Dirt dirt)) return;
+            if (!other.TryGetComponent(out Dirt dirt))
+             return;
             
             dirt.Dig();
             OnDig?.Invoke();

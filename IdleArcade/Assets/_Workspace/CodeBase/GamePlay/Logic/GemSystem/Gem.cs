@@ -12,8 +12,15 @@ namespace _Workspace.CodeBase.GamePlay.Logic.GemSystem
         [SerializeField] private Color _lockedColor;
         [SerializeField] private Rigidbody _rigidbody;
 
-        public float Size => transform.localScale.x;
-        private void Awake() 
+        public float Size => 0.3f;
+
+        public void Store()
+        {
+            _collider.enabled = false;
+            _rigidbody.isKinematic = true;
+        }
+
+        private void Awake()
             => _renderer.material.color = _lockedColor;
 
         public void Unlock()
@@ -27,12 +34,6 @@ namespace _Workspace.CodeBase.GamePlay.Logic.GemSystem
         {
             _renderer.material.color = Color.white;
             _renderer.material.DOColor(_unlockedColor, 0.5f);
-        }
-
-        public void Store()
-        {
-            _collider.enabled = false;
-            _rigidbody.isKinematic = true;
         }
     }
 }

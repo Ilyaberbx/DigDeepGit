@@ -13,6 +13,7 @@ namespace _Workspace.CodeBase.GamePlay.Logic.GemSystem
         public Dictionary<Dirt, int> GetGemsByDirtMap(List<Dirt> dirtList, int depth)
         {
             int totalGems = GetRandomGemsByDepth(depth);
+            Debug.Log(totalGems);
             Dictionary<Dirt, int> dirtGemsMap = new Dictionary<Dirt, int>();
 
             dirtList.Shuffle();

@@ -56,6 +56,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - GamePlayState
+  - m_GUID: a41287772da73e14fbb55e3e3e2a5bc6
+    m_Address: Ladder
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GamePlayState
+  - m_GUID: b8e42a35a3c8eed4d829fb449cc23cd4
+    m_Address: DepthObstacle
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GamePlayState
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 032c7a5e9ac68534d9c5c3a578139d75, type: 2}
   m_SchemaSet:

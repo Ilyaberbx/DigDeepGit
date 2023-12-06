@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+using _Workspace.CodeBase.Extensions;
 using _Workspace.CodeBase.GamePlay.Factory;
 using _Workspace.CodeBase.GamePlay.Input;
 using _Workspace.CodeBase.GamePlay.Logic.Camera;
@@ -25,6 +25,8 @@ namespace _Workspace.CodeBase.GamePlay.StateMachine.State
         private readonly DirtSystem _dirtSystem;
         private readonly CameraFollow _follow;
         private readonly GameplayStateMachine _gameplayStateMachine;
+
+        private Vector3 PlayerStartPoint => Vector3.zero.WithZ(10);
 
         public GameplayBootstrapState(IEventBusService eventBus
             , ILoadingCurtain curtain
@@ -58,7 +60,7 @@ namespace _Workspace.CodeBase.GamePlay.StateMachine.State
 
             await InitializeDirtSystem();
 
-            Transform player = await _playerFactory.CreatePlayer(Vector3.zero);
+            Transform player = await _playerFactory.CreatePlayer(PlayerStartPoint);
             
             InitializeCamera(player);
 
