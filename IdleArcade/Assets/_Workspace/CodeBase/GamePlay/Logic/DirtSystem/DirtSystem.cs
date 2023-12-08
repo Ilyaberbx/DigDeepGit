@@ -38,6 +38,7 @@ namespace _Workspace.CodeBase.GamePlay.Logic.DirtSystem
             CreateLayers();
             await InitializeLayers();
             await UnlockLayer();
+            InformNextLayer();
         }
 
         private void CreateLayers()
@@ -69,8 +70,8 @@ namespace _Workspace.CodeBase.GamePlay.Logic.DirtSystem
         {
             _depth++;
             MoveDigLayerToEnd();
-            InformNextLayer();
             await UnlockLayer();
+            InformNextLayer();
         }
 
         private void InformNextLayer() 

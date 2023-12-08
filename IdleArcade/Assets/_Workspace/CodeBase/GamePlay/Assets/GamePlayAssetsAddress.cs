@@ -7,5 +7,6 @@
         public const string Dirt = "Dirt";
         public const string Ladder = "Ladder";
         public const string DepthObstacle = "DepthObstacle";
+        public const string PitObstacle = "PitObstacle";
     }
 }

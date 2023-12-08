@@ -8,6 +8,7 @@ using _Workspace.CodeBase.GamePlay.StateMachine;
 using _Workspace.CodeBase.Service.Factory;
 using _Workspace.CodeBase.UI.Factory;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Zenject;
 
 namespace _Workspace.CodeBase.GamePlay
@@ -16,7 +17,7 @@ namespace _Workspace.CodeBase.GamePlay
     {
         [SerializeField] private GameplayBootstrapper _bootstrapper;
         [SerializeField] private DirtConfig _dirtConfig;
-        [SerializeField] private LadderSystem _ladderSystem;
+        [FormerlySerializedAs("_ladderSystem")] [SerializeField] private LadderSystem ladder;
 
         public override void InstallBindings()
         {
@@ -33,7 +34,7 @@ namespace _Workspace.CodeBase.GamePlay
 
         private void BindLadderSystem() =>
             Container.BindInterfacesAndSelfTo<LadderSystem>()
-                .FromInstance(_ladderSystem)
+                .FromInstance(ladder)
                 .AsSingle();
 
         private void BindGemsProvider() 

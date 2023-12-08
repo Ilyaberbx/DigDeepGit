@@ -22,7 +22,7 @@ namespace _Workspace.CodeBase.GamePlay.Logic.GravitySystem
             => CalculateGravity();
 
 
-        private bool TryCatchGround()
+        public bool TryCatchGround()
         {
             Collider[] hits = Physics.OverlapSphere(_checkingGroundPoint.Position, _checkingGroundPoint.Radius);
 
@@ -33,10 +33,10 @@ namespace _Workspace.CodeBase.GamePlay.Logic.GravitySystem
                 Ground ground = check.transform.GetComponentInParent<Ground>();
 
                 if (ground == null) continue;
-
+                
                 return true;
             }
-
+            
             return false;
         }
 

@@ -12,7 +12,7 @@ namespace _Workspace.CodeBase.GamePlay.Logic.DirtSystem
         {
             _counter.UpdateDepthText(depth);
             
-            foreach (var renderer in _renderers) 
+            foreach (Renderer renderer in _renderers) 
                 renderer.material.color = color;
         }
 

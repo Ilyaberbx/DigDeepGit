@@ -27,7 +27,20 @@ namespace _Workspace.CodeBase.GamePlay.Logic.Player.Movement
         {
             _movables.Add(typeof(WalkMovable), new WalkMovable(_characterController, _input, _moveSpeed));
             _movables.Add(typeof(LadderMovable), new LadderMovable(_characterController, _input, _climbSpeed));
+            _movables.Add(typeof(NoMovable), new NoMovable());
             SetMovable<WalkMovable>();
+        }
+
+        public void Stop()
+        {
+            SetMovable<NoMovable>();
+            _characterController.enabled = false;
+        }
+
+        public void Resume<T>() where T : IMovable
+        {
+            _characterController.enabled = true;
+            SetMovable<T>();
         }
 
         public void SetMovable<T>() where T : IMovable
@@ -40,7 +53,7 @@ namespace _Workspace.CodeBase.GamePlay.Logic.Player.Movement
 
         private void Update()
         {
-           Vector3 direction = _currentMovable?.Move() ?? Vector3.zero;
+           Vector3 direction = _currentMovable?.MoveWithDirection() ?? Vector3.zero;
            OnMove?.Invoke(direction);
         }
     }

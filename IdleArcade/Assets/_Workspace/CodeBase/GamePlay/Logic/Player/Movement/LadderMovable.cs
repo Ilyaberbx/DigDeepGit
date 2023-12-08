@@ -19,7 +19,7 @@ namespace _Workspace.CodeBase.GamePlay.Logic.Player.Movement
             _speed = speed;
         }
 
-        public Vector3 Move()
+        public Vector3 MoveWithDirection()
         {
             Vector3 direction = Vector3.zero
                 .WithY(_input.GetVerticalInput())
