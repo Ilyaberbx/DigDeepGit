@@ -28,7 +28,7 @@ namespace _Workspace.CodeBase.GamePlay.Logic.LadderSystem
         {
 
             if (depth == 1)
-                _prefabFactory.Create<Transform>(GamePlayAssetsAddress.PitObstacle);
+                _prefabFactory.Create<Transform>(GamePlayAssetsAddress.DepthObstacle);
 
             if (depth % 2 == 1)
                 return;
@@ -46,7 +46,7 @@ namespace _Workspace.CodeBase.GamePlay.Logic.LadderSystem
             return ladderPart;
         }
 
-        private void AddPart(LadderPart ladderPart)
+        public void AddPart(LadderPart ladderPart)
         {
             _wholeLadderCollider.size += Vector3.zero
                 .AddY(ladderPart.Size * 2);

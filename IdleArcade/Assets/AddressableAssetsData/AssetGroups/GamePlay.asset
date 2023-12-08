@@ -56,8 +56,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - GamePlayState
-  - m_GUID: a41287772da73e14fbb55e3e3e2a5bc6
-    m_Address: Ladder
+  - m_GUID: c04be28053c883243a0f65db6c4358ff
+    m_Address: LadderPart
     m_ReadOnly: 0
     m_SerializedLabels:
     - GamePlayState
@@ -68,6 +68,11 @@ MonoBehaviour:
     - GamePlayState
   - m_GUID: d20877cfb41a87f4197bdc1cd5f8f0ba
     m_Address: PitObstacle
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - GamePlayState
+  - m_GUID: a41287772da73e14fbb55e3e3e2a5bc6
+    m_Address: Ladder
     m_ReadOnly: 0
     m_SerializedLabels:
     - GamePlayState

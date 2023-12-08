@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using _Workspace.CodeBase.Extensions;
 using _Workspace.CodeBase.GamePlay.Factory;
 using _Workspace.CodeBase.GamePlay.Input;
 using _Workspace.CodeBase.GamePlay.Logic.Camera;
 using _Workspace.CodeBase.GamePlay.Logic.DirtSystem;
+using _Workspace.CodeBase.GamePlay.Logic.LadderSystem;
+using _Workspace.CodeBase.GamePlay.Logic.ObstaclesSystem;
 using _Workspace.CodeBase.Infrastructure.Service.EventBus.Handlers;
 using _Workspace.CodeBase.Infrastructure.Service.StateMachine.State;
 using _Workspace.CodeBase.Service.EventBus;
@@ -23,8 +26,9 @@ namespace _Workspace.CodeBase.GamePlay.StateMachine.State
         private readonly PlayerFactory _playerFactory;
         private readonly InputServiceProxy _inputProxy;
         private readonly DirtSystem _dirtSystem;
+        private readonly LadderWrapper _ladderWrapper;
+        private readonly DepthObstacleWrapper _depthObstacleWrapper;
         private readonly CameraFollow _follow;
-        private readonly GameplayStateMachine _gameplayStateMachine;
 
         private Vector3 PlayerStartPoint => Vector3.zero.WithZ(10);
 
@@ -35,8 +39,9 @@ namespace _Workspace.CodeBase.GamePlay.StateMachine.State
             , PlayerFactory playerFactory
             , InputServiceProxy inputProxy
             , DirtSystem dirtSystem
-            , CameraFollow follow
-            , GameplayStateMachine gameplayStateMachine)
+            , LadderWrapper ladderWrapper
+            , DepthObstacleWrapper depthObstacleWrapper
+            , CameraFollow follow)
         {
             _eventBus = eventBus;
             _curtain = curtain;
@@ -45,29 +50,57 @@ namespace _Workspace.CodeBase.GamePlay.StateMachine.State
             _playerFactory = playerFactory;
             _inputProxy = inputProxy;
             _dirtSystem = dirtSystem;
+            _ladderWrapper = ladderWrapper;
+            _depthObstacleWrapper = depthObstacleWrapper;
             _follow = follow;
-            _gameplayStateMachine = gameplayStateMachine;
         }
 
         public async UniTask Enter()
         {
+            SubscribeHandlers();
+
+            await InitializeUI();
+
+            await InitializeServices();
+
+            await InitializeWorld();
+
+            _curtain.Hide()
+                .Forget();
+        }
+
+        private void SubscribeHandlers()
+        {
             foreach (IGlobalSubscriber subscriber in _subscribers)
                 _eventBus.Subscribe(subscriber);
+        }
 
-            await _uiFactory.CreateUIRoot();
+        private async UniTask InitializeServices()
+            => await InitializeInputService();
 
-            await InitializeInputService();
+        private async UniTask InitializeUI()
+            => await _uiFactory.CreateUIRoot();
+
+        private async UniTask InitializeWorld()
+        {
+            await InitializeDepthObstacle();
+
+            await InitializeLadder();
 
             await InitializeDirtSystem();
 
             Transform player = await _playerFactory.CreatePlayer(PlayerStartPoint);
-            
-            InitializeCamera(player);
 
-            _curtain.Hide().Forget();
+            InitializeCamera(player);
         }
 
-        private void InitializeCamera(Transform player) 
+        private async UniTask InitializeDepthObstacle()
+            => await _depthObstacleWrapper.Initialize();
+
+        private async UniTask InitializeLadder()
+            => await _ladderWrapper.Initialize();
+
+        private void InitializeCamera(Transform player)
             => _follow.SetTarget(player);
 
         private async UniTask InitializeDirtSystem()

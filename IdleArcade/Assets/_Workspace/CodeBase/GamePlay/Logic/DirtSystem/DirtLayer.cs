@@ -4,6 +4,9 @@ using _Workspace.CodeBase.Extensions;
 using _Workspace.CodeBase.GamePlay.Assets;
 using _Workspace.CodeBase.GamePlay.Logic.DirtSystem.StaticData;
 using _Workspace.CodeBase.GamePlay.Logic.GemSystem;
+using _Workspace.CodeBase.GamePlay.Logic.ObstaclesSystem;
+using _Workspace.CodeBase.GamePlay.Logic.ObstaclesSystem.Handlers;
+using _Workspace.CodeBase.Service.EventBus;
 using _Workspace.CodeBase.Service.Factory;
 using Cysharp.Threading.Tasks;
 using ModestTree;
@@ -13,10 +16,9 @@ namespace _Workspace.CodeBase.GamePlay.Logic.DirtSystem
 {
     public class DirtLayer
     {
-        public event Action OnDig;
-
         private readonly IPrefabFactoryAsync _prefabFactory;
         private readonly IGemsProvider _gemsProvider;
+        private readonly IEventBusService _eventBus;
         private readonly DirtConfig _dirtConfig;
         private readonly List<Dirt> _dirtList = new();
 
@@ -25,10 +27,12 @@ namespace _Workspace.CodeBase.GamePlay.Logic.DirtSystem
 
         public DirtLayer(IPrefabFactoryAsync prefabFactory
             , IGemsProvider gemsProvider
+            , IEventBusService eventBus
             , DirtConfig dirtConfig)
         {
             _prefabFactory = prefabFactory;
             _gemsProvider = gemsProvider;
+            _eventBus = eventBus;
             _dirtConfig = dirtConfig;
         }
 
@@ -38,12 +42,21 @@ namespace _Workspace.CodeBase.GamePlay.Logic.DirtSystem
             Update(depth);
         }
 
-        private async UniTask<DepthObstacle> CreateDepthObstacle(int depth) =>
-            await _prefabFactory
-                .Create<DepthObstacle>(GamePlayAssetsAddress.DepthObstacle
-                    , Vector3.zero
-                        .WithY(-depth / 2f),
-                    null);
+        public void Update(int depth)
+        {
+            if (_dirtList.IsEmpty())
+                return;
+
+            Reset();
+            InformLayerUpdate(depth);
+            UpdateDirtField(depth);
+        }
+
+        public void Unlock()
+        {
+            foreach (Dirt dirt in _dirtList)
+                dirt.Unlock();
+        }
 
         public async UniTask AppearGems(int depth)
         {
@@ -78,22 +91,9 @@ namespace _Workspace.CodeBase.GamePlay.Logic.DirtSystem
             }
         }
 
-        public async void Update(int depth)
-        {
-            if (_dirtList.IsEmpty())
-                return;
-
-            Reset();
-            _obstacle = await CreateDepthObstacle(depth);
-            _obstacle.Initialize(depth, GetLayerColor(depth));
-            UpdateDirtField(depth);
-        }
-
-        public void Unlock()
-        {
-            foreach (Dirt dirt in _dirtList)
-                dirt.Unlock();
-        }
+        private void InformLayerUpdate(int depth)
+            => _eventBus.RaiseEvent<ILayerUpdateHandler>(handler
+                => handler.HandLayerInitialize(depth, GetLayerColor(depth)));
 
         private void Reset()
             => _digDirtCount = 0;
@@ -104,10 +104,14 @@ namespace _Workspace.CodeBase.GamePlay.Logic.DirtSystem
 
             if (_digDirtCount >= _dirtList.Count)
             {
-                _obstacle.Dig();
-                OnDig?.Invoke();
+                Debug.Log("Dig");
+                InformLayerDig();
             }
         }
+
+        private void InformLayerDig()
+            => _eventBus.RaiseEvent<ILayerDigHandler>(handler
+                => handler.HandleLayerDig());
 
 
         private async UniTask<Dirt> CreateDirt(float x, float z) =>

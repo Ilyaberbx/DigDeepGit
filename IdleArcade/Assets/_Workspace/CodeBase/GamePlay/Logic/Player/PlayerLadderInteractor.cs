@@ -1,7 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using _Workspace.CodeBase.Extensions;
 using _Workspace.CodeBase.GamePlay.Input;
+using _Workspace.CodeBase.GamePlay.Logic.LadderSystem;
 using _Workspace.CodeBase.GamePlay.Logic.Player.Movement;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
@@ -16,8 +16,8 @@ namespace _Workspace.CodeBase.GamePlay.Logic.Player
         [SerializeField] private GravitySystem.Gravity _gravity;
 
         private readonly List<UniTask> _tasks = new();
-        [SerializeField] private bool _isOnLadder;
-        [SerializeField] private bool _isClimbing;
+        private bool _isOnLadder;
+        private bool _isRejecting;
         private IInputService _input;
         private Coroutine _ladderRoutine;
 
@@ -27,38 +27,26 @@ namespace _Workspace.CodeBase.GamePlay.Logic.Player
 
         private async void OnTriggerEnter(Collider other)
         {
-            if (_isClimbing)
+            if (_isRejecting)
                 return;
 
-            if (other.TryGetComponent(out LadderSystem.Ladder ladder))
+            if (IsLadder(other, out Ladder ladder))
             {
-                await OnLadderRoutine(ladder);
+                _gravity.enabled = false;
+                _mover.Stop();
+
+                _isOnLadder = false;
+
+                await ApplyLadderPosition(ladder);
+
+                _isOnLadder = true;
+                _mover.Resume<LadderMovable>();
+
+                _ladderRoutine = null;
             }
         }
 
-        private async UniTask OnLadderRoutine(LadderSystem.Ladder ladder)
-        {
-            _gravity.enabled = false;
-            _mover.Stop();
-
-            _isOnLadder = false;
-
-            _tasks.Add(_mover.transform.DOMoveZ(ladder.transform.position.z - 0.5f, 0.3f).ToUniTask());
-            _tasks.Add(_mover.transform.DOMoveX(ladder.transform.position.x, 0.2f).ToUniTask());
-
-            Debug.Log("On ladder");
-
-            await UniTask.WhenAny(_tasks);
-            
-            await _mover.transform.DOLookAt(ladder.transform.position, 0.2f, AxisConstraint.Y).ToUniTask();
-            _isOnLadder = true;
-            _tasks.Clear();
-            _mover.Resume<LadderMovable>();
-
-            _ladderRoutine = null;
-        }
-
-        private async void OnTriggerStay(Collider other)
+        private void OnTriggerStay(Collider other)
         {
             if (_ladderRoutine != null)
                 return;
@@ -66,50 +54,84 @@ namespace _Workspace.CodeBase.GamePlay.Logic.Player
             if (!_isOnLadder)
                 return;
 
-            if (other.TryGetComponent(out LadderSystem.Ladder ladder))
+            if (IsLadder(other))
             {
                 if (_gravity.TryCatchGround())
                 {
-                    if (Mathf.Abs(_input.GetHorizontalInput()) < 0.1f)
+                    if (!EnoughToReject()) 
                         return;
 
-                    if (_input.GetVerticalInput() > -0.1f)
-                        return;
-
-                    Debug.Log("ladder ground");
-                    _isClimbing = true;
-                    _mover.Stop();
-                    _isOnLadder = false;
-                    _tasks.Clear();
-                    _mover.Resume<WalkMovable>();
-                    _gravity.enabled = true;
-                    _isClimbing = false;
+                    RejectFromLadder();
                 }
             }
         }
 
         private async void OnTriggerExit(Collider other)
         {
-            if (_isClimbing || !_isOnLadder)
+            if (_isRejecting || !_isOnLadder)
                 return;
 
-            if (other.TryGetComponent(out LadderSystem.Ladder ladder))
+            if (IsLadder(other))
             {
                 _mover.Stop();
-                Debug.Log("Leave the ladder");
-                await _mover.transform.DOJump(_mover.transform.position
-                            .AddZ(2)
-                            .WithY(1)
-                        , 0.5f
-                        , 1
-                        , 0.3f)
-                    .ToUniTask();
+
+                await PushToLadderTop();
 
                 _isOnLadder = false;
-                _isClimbing = false;
+                _isRejecting = false;
+
                 _mover.Resume<WalkMovable>();
+
                 _gravity.enabled = true;
             }
         }
+
+        private async UniTask ApplyLadderPosition(Ladder ladder)
+        {
+            Vector3 ladderPosition = ladder.transform.position;
+            
+            _tasks.Add(_mover.transform.DOMoveZ(ladderPosition.z - 0.5f, 0.3f).ToUniTask());
+            _tasks.Add(_mover.transform.DOMoveX(ladderPosition.x, 0.2f).ToUniTask());
+            
+            await UniTask.WhenAny(_tasks);
+            _tasks.Clear();
+            
+            await _mover.transform.DOLookAt(ladderPosition, 0.2f, AxisConstraint.Y).ToUniTask();
+        }
+
+        private void RejectFromLadder()
+        {
+            _mover.Stop();
+
+            _isRejecting = true;
+            _isOnLadder = false;
+
+            _mover.Resume<WalkMovable>();
+
+            _gravity.enabled = true;
+            _isRejecting = false;
+        }
+
+        private bool EnoughToReject()
+        {
+            if (Mathf.Abs(_input.GetHorizontalInput()) < 0.1f)
+                return false;
+
+            if (_input.GetVerticalInput() > -0.1f)
+                return false;
+            
+            return true;
+        }
+
+        private bool IsLadder(Collider collision, out Ladder ladder)
+            => collision.TryGetComponent(out ladder);
+
+        private bool IsLadder(Collider collision)
+            => collision.TryGetComponent(out Ladder _);
+
+        private async UniTask PushToLadderTop() =>
+            await _mover.transform.DOJump(_mover.transform.position
+                .AddZ(2)
+                .WithY(1), 0.5f, 1, 0.3f).ToUniTask();
     }
 }

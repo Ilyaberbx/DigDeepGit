@@ -12,7 +12,7 @@ namespace _Workspace.CodeBase.GamePlay.Logic.GemSystem
         [SerializeField] private Color _lockedColor;
         [SerializeField] private Rigidbody _rigidbody;
 
-        public float Size => 0.3f;
+        public float Size => 0.4f;
 
         public void Store()
         {

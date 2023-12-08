@@ -43,7 +43,7 @@ namespace _Workspace.CodeBase.GamePlay.Logic.Player.Movement
             SetMovable<T>();
         }
 
-        public void SetMovable<T>() where T : IMovable
+        private void SetMovable<T>() where T : IMovable
         {
             if (_movables.TryGetValue(typeof(T), out IMovable movable))
                 _currentMovable = movable;

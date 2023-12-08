@@ -114,10 +114,7 @@ namespace _Workspace.CodeBase.GamePlay.Logic.DirtSystem
             for (int i = 0; i < gems; i++)
                 tasks.Add(SpawnGem());
 
-            _gems
-                .AddRange(
-                    await UniTask
-                        .WhenAll(tasks));
+            _gems.AddRange(await UniTask.WhenAll(tasks));
         }
 
         private async UniTask<Gem> SpawnGem()
